@@ -77,8 +77,10 @@ ggplot(missing_percent_df, aes(x = Column, y = MissingPercent)) +
     xlab("Columns") +
     ylab("Percentage of Missing Values (%)")
 ```
-The analysis of the Electric Vehicle Population Data reveals insightful patterns regarding missing values, as depicted in the following two graphs.
+The analysis of the Electric Vehicle Population Data reveals insightful patterns regarding missing values, as depicted in the following two graphs
 
 1. Missing Values Count: The first graph displays the count of missing values in each column where missing values are present. This graph provides a clear indication of which columns have missing data and the extent of these missing values.
 
 2. Percentage of Missing Values: The second graph shows the percentage of missing values relative to the total number of rows in the dataset for each column with missing data. This perspective is crucial for understanding the significance of the missing data in relation to the entire dataset.
+
+
