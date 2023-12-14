@@ -1,40 +1,44 @@
-## Description
+# Description
 
-2.1 Technical Description
+## Technical Description
 
-Data Source: 
+**(1) Data Source:**
+
 "Electric Vehicle Population Data" from the U.S. Department of Energy, available on Data.gov. (https://catalog.data.gov/dataset/electric-vehicle-population-data)
 
-Data Descriptions:
--- This data is collected and maintained by the U.S. Department of Energy, reflecting the statistics on electric vehicle ownership in Washington state.
--- The data is available in CSV format, which is convenient for importing and analyzing in most data analysis tools.
--- The dataset is updated regularly, ensuring access to the latest trends and numbers.
--- It includes key information such as the make and model of the vehicle, the type of electric vehicle, and geographical data.
+**(2) Data Descriptions:**
 
-Potential Issues with Data:
+1. This data is collected and maintained by the U.S. Department of Energy, reflecting the statistics on electric vehicle ownership in Washington state.
+2. The data is available in CSV format, which is convenient for importing and analyzing in most data analysis tools.
+3. The dataset is updated regularly, ensuring access to the latest trends and numbers.
+4. It includes key information such as the make and model of the vehicle, the type of electric vehicle, and geographical data.
+
+**(3) Potential Issues with Data:**
+
 Initial review suggests the data is comprehensive but will require a thorough quality check for inconsistencies or inaccuracies.
 
-Import Method: 
+**(4) Import Method:**
+
 The data will be imported using the read.csv function from R's built-in utilities. Additional R packages like dplyr and tidyr may be utilized for data manipulation and cleaning, ensuring that the dataset is in the optimal format for analysis.
 
 
-2.2 Research Plan
+## Research Plan
 
-(1)Analyzing Trends in EV Adoption:
+**(1) Analyzing Trends in EV Adoption**:
 
 Time-Series Analysis: We will conduct a time-series analysis to understand how the popularity of electric vehicles has evolved over the years. By plotting the number of EVs registered each year, we can identify trends, growth rates, and potential inflection points in EV adoption.
 
 Comparative Analysis: By comparing the adoption rates of different types of EVs (eg. hybrids vs. fully electric), we can gain insights into consumer preferences and technological advancements in the field.
 
 
-(2)Investigating Geographical Variations:
+**(2) Investigating Geographical Variations**:
 
 Spatial Analysis: Using the geographical data available in the dataset, we will conduct a spatial analysis to map out the distribution of EVs across WA.
 
 Correlation with External Factors: We'll explore correlations between EV adoption and external factors such as state-level policies on EVs, charging infrastructure availability, and socio-economic indicators. This will help us understand the driving forces behind regional differences in EV adoption.
 
 
-(3)Exploring Vehicle Types:
+**(3) Exploring Vehicle Types**:
 
 Categorization and Frequency Analysis: The dataset will be categorized based on vehicle types. We will perform a frequency analysis to determine the most popular types of EVs.
 
@@ -82,5 +86,4 @@ The analysis of the Electric Vehicle Population Data reveals insightful patterns
 1. Missing Values Count: The first graph displays the count of missing values in each column where missing values are present. This graph provides a clear indication of which columns have missing data and the extent of these missing values.
 
 2. Percentage of Missing Values: The second graph shows the percentage of missing values relative to the total number of rows in the dataset for each column with missing data. This perspective is crucial for understanding the significance of the missing data in relation to the entire dataset.
-
 
