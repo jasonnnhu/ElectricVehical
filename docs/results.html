@@ -181,6 +181,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#comparative-analysis-of-ev-adoption-by-type-phev-vs-bev" id="toc-comparative-analysis-of-ev-adoption-by-type-phev-vs-bev" class="nav-link" data-scroll-target="#comparative-analysis-of-ev-adoption-by-type-phev-vs-bev"><span class="header-section-number">3.3</span> Comparative Analysis of EV Adoption by Type (PHEV vs BEV)</a></li>
   <li><a href="#spatial-distribution-of-evs-in-states" id="toc-spatial-distribution-of-evs-in-states" class="nav-link" data-scroll-target="#spatial-distribution-of-evs-in-states"><span class="header-section-number">3.4</span> Spatial Distribution of EVs in States</a></li>
   <li><a href="#spatial-distribution-of-evs-in-washington-state" id="toc-spatial-distribution-of-evs-in-washington-state" class="nav-link" data-scroll-target="#spatial-distribution-of-evs-in-washington-state"><span class="header-section-number">3.5</span> Spatial Distribution of EVs in Washington State</a></li>
+  <li><a href="#top-10-counties-by-ev-distribution-in-washington-state" id="toc-top-10-counties-by-ev-distribution-in-washington-state" class="nav-link" data-scroll-target="#top-10-counties-by-ev-distribution-in-washington-state"><span class="header-section-number">3.6</span> Top 10 Counties by EV Distribution in Washington State</a></li>
+  <li><a href="#assosication-bwteen-number-of-evs-registered-vs-some-socio-economic-factors" id="toc-assosication-bwteen-number-of-evs-registered-vs-some-socio-economic-factors" class="nav-link" data-scroll-target="#assosication-bwteen-number-of-evs-registered-vs-some-socio-economic-factors"><span class="header-section-number">3.7</span> Assosication Bwteen Number of EVs Registered vs Some Socio-economic Factors</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/jasonnnhu/ElectricVehical/edit/main/results.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/jasonnnhu/ElectricVehical/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -375,6 +377,108 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The map showcases the geographical spread of electric vehicles (EVs) across Washington State, with a notable concentration in the metropolitan area around Puget Sound, including Seattle. This distribution pattern aligns with urban population densities and the availability of EV infrastructure such as charging stations. The scatter of EVs beyond these hubs into more rural areas indicates a broader adoption, possibly encouraged by state policies and incentives. The map highlights key areas for potential infrastructure development and offers a visual representation of EV penetration, which is crucial for planning future expansions of green transportation initiatives in Washington.</p>
+</section>
+<section id="top-10-counties-by-ev-distribution-in-washington-state" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="top-10-counties-by-ev-distribution-in-washington-state"><span class="header-section-number">3.6</span> Top 10 Counties by EV Distribution in Washington State</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>county_distribution <span class="ot">&lt;-</span> ev_data <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(County, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">10</span>, n)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(county_distribution, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(County, <span class="sc">-</span>n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> <span class="st">"skyblue"</span>) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Top 10 Counties by EV Distribution in Washington State"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"County"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Number of EVs"</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The bar chart illustrates the top 10 counties in Washington State by electric vehicle (EV) distribution. King County leads by a substantial margin, reflecting a higher rate of EV adoption, likely due to urbanization and infrastructure support. Snohomish and Pierce counties follow, indicating significant EV presence. The chart reveals a stark contrast between King County and the others, suggesting a potential focus area for expanding EV infrastructure and incentives. The distribution pattern underscores the correlation between population density, infrastructure, and EV adoption rates across different regions.</p>
+</section>
+<section id="assosication-bwteen-number-of-evs-registered-vs-some-socio-economic-factors" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="assosication-bwteen-number-of-evs-registered-vs-some-socio-economic-factors"><span class="header-section-number">3.7</span> Assosication Bwteen Number of EVs Registered vs Some Socio-economic Factors</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressPackageStartupMessages</span>(<span class="fu">library</span>(tidyverse))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>pce_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'/Users/hujiasheng/SAPCE3_WA_1997_2022.csv'</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>gdp_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'/Users/hujiasheng/WA_Data_GDP.csv'</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocessing for PCE data</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>pce_filtered <span class="ot">&lt;-</span> pce_data <span class="sc">%&gt;%</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="dv">7</span><span class="sc">:</span><span class="fu">ncol</span>(pce_data)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">2</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>pce_long <span class="ot">&lt;-</span> pce_filtered <span class="sc">%&gt;%</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="sc">-</span>Description, </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Year"</span>, </span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"PCE"</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="dv">1</span>)</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>pce_long<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">sub</span>(<span class="st">"X"</span>, <span class="st">""</span>, pce_long<span class="sc">$</span>Year))</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ev_count_by_year)[<span class="dv">1</span>] <span class="ot">=</span><span class="st">"Year"</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>merged_data_pce <span class="ot">&lt;-</span> <span class="fu">merge</span>(ev_count_by_year, pce_long, <span class="at">by =</span> <span class="st">"Year"</span>)</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocessing for GDP data</span></span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(gdp_data)[<span class="dv">1</span>] <span class="ot">=</span><span class="st">"Year"</span></span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>gdp_data<span class="sc">$</span>Washington.Per.Capita.GDP <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">$"</span>, <span class="st">""</span>, gdp_data<span class="sc">$</span>Washington.Per.Capita.GDP)</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>gdp_data<span class="sc">$</span>Washington.Per.Capita.GDP <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, gdp_data<span class="sc">$</span>Washington.Per.Capita.GDP))</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>gdp_data<span class="sc">$</span>Washington.Population <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">gsub</span>(<span class="st">","</span>, <span class="st">""</span>, gdp_data<span class="sc">$</span>Washington.Population))</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>merged_data_gdp <span class="ot">&lt;-</span> <span class="fu">merge</span>(ev_count_by_year, gdp_data, <span class="at">by =</span> <span class="st">"Year"</span>)</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 1: Number of EVs Registered vs Personal Consumption Expenditures</span></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(merged_data_pce, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(PCE), <span class="at">y =</span> <span class="fu">log</span>(Count))) <span class="sc">+</span></span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of EVs Registered vs Personal Consumption Expenditures"</span>,</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Log of Personal Consumption Expenditures in Washington State"</span>,</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Log of Number of EVs Registered"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 2: Number of EVs Registered vs Washington Population</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(merged_data_gdp, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(Washington.Population), <span class="at">y =</span> <span class="fu">log</span>(Count))) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of EVs Registered vs Washington Population"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Log of Population in Washington State"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Log of Number of EVs Registered"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot 3: Number of EVs Registered vs GDP per capita</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(merged_data_gdp, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(Washington.Per.Capita.GDP), <span class="at">y =</span> <span class="fu">log</span>(Count))) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of EVs Registered vs GDP per capita"</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"Log of GDP per capita in Washington State"</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Log of Number of EVs Registered"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="results_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
 </section>
