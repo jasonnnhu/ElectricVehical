@@ -4,14 +4,17 @@
 
 **(1) Data Source:**
 
-"Electric Vehicle Population Data" from the U.S. Department of Energy, available on Data.gov. (https://catalog.data.gov/dataset/electric-vehicle-population-data)
+1. "Electric Vehicle Population Data" from the U.S. Department of Energy, available on Data.gov. (https://catalog.data.gov/dataset/electric-vehicle-population-data)
+2. "Washington State Population and GDP Per Capita Data" from Bureau of Economic Analysis, U.S. Department of Commerce, available on bea.gov (https://www.bea.gov/)
+3. "Personal Consumption Data in Washington State" from from Bureau of Economic Analysis, U.S. Department of Commerce, available on bea.gov.
+(https://apps.bea.gov/regional/downloadzip.cfm)
 
 **(2) Data Descriptions:**
 
-1. This data is collected and maintained by the U.S. Department of Energy, reflecting the statistics on electric vehicle ownership in Washington state.
+1. These datasets are collected and maintained by the U.S. Department of Energy and Department of Commerce, reflecting the statistics on electric vehicle ownership in Washington state, as well as the economic factors.
 2. The data is available in CSV format, which is convenient for importing and analyzing in most data analysis tools.
 3. The dataset is updated regularly, ensuring access to the latest trends and numbers.
-4. It includes key information such as the make and model of the vehicle, the type of electric vehicle, and geographical data.
+4. It includes key information such as the make and model of the vehicle, the type of electric vehicle, geographical data, and basic socio-economic data of Washington State.
 
 **(3) Potential Issues with Data:**
 
