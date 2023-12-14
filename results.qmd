@@ -1,3 +1,42 @@
 # Results
 
-This is another test
+## Plot 1
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+
+ev_data <- read.csv('/Users/hujiasheng/Electric_Vehicle_Population_Data.csv')
+
+ev_count_by_year <- ev_data %>% 
+  group_by(Model.Year) %>%
+  summarise(Count = n(), .groups= 'drop')
+
+# Plotting the number of EVs registered each year
+ggplot(ev_count_by_year, aes(x = Model.Year, y = Count)) +
+  geom_line(na.rm = TRUE) +
+  geom_point(na.rm = TRUE) +
+  scale_x_continuous(limits = c(NA, 2023)) +
+  theme_minimal() +
+  ggtitle("Number of EVs Registered Each Year") +
+  xlab("Year") +
+  ylab("Number of EV Registrations")
+```
+**Number of EVs Registered Each Year (R-style Plot):** This plot shows the count of electric vehicles registered each year. The trend line and points provide a clear visualization of the growth in EV adoption over the years.
+
+## Plot 2
+```{r}
+# Calculate year-over-year growth rate
+ev_count_by_year <- ev_count_by_year %>%
+  mutate(Growth = (Count / lag(Count) - 1) * 100)
+
+# Plotting the year-over-year growth rate of EV registrations
+ggplot(ev_count_by_year, aes(x = Model.Year, y = Growth)) +
+  geom_line(color = "black", na.rm = TRUE) +
+  geom_point(color = "black", na.rm = TRUE) +
+  scale_x_continuous(limits = c(NA, 2023)) +
+  theme_minimal() +
+  ggtitle("Year-over-Year Growth Rate in EV Registrations") +
+  xlab("Year") +
+  ylab("Growth Rate (%)")
+```
+**Year-over-Year Growth Rate in EV Registrations (R-style Plot):** This plot represents the year-over-year growth rate in EV registrations, calculated as a percentage. It highlights the annual percentage change, indicating periods of significant growth or decline in EV adoption.

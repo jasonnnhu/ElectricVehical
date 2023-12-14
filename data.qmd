@@ -50,7 +50,7 @@ Cross-Tabulation with Other Variables: By cross-tabulating vehicle types with ot
 ```{r}
 library(ggplot2)
 library(reshape2)
-library(tidyr)
+suppressPackageStartupMessages(library(dplyr))
 
 #setwd("~/Desktop")
 ev_data <- read.csv('/Users/hujiasheng/Electric_Vehicle_Population_Data.csv')
