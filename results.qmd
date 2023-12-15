@@ -12,8 +12,8 @@ ev_count_by_year <- ev_data %>%
   summarise(Count = n(), .groups= 'drop')
 
 ggplot(ev_count_by_year, aes(x = Model.Year, y = Count)) +
-  geom_line(na.rm = TRUE) +
-  geom_point(na.rm = TRUE) +
+  geom_line(na.rm = TRUE, color='skyblue') +
+  geom_point(na.rm = TRUE,  color='orange') +
   scale_x_continuous(limits = c(NA, 2023)) +
   theme_minimal() +
   ggtitle("Number of EVs Registered Each Year") +
@@ -28,8 +28,8 @@ ev_count_by_year <- ev_count_by_year %>%
   mutate(Growth = (Count / lag(Count) - 1) * 100)
 
 ggplot(ev_count_by_year, aes(x = Model.Year, y = Growth)) +
-  geom_line(color = "black", na.rm = TRUE) +
-  geom_point(color = "black", na.rm = TRUE) +
+  geom_line(color = "skyblue", na.rm = TRUE) +
+  geom_point(color = "orange", na.rm = TRUE) +
   scale_x_continuous(limits = c(NA, 2023)) +
   theme_minimal() +
   ggtitle("Year-over-Year Growth Rate in EV Registrations") +
@@ -37,6 +37,72 @@ ggplot(ev_count_by_year, aes(x = Model.Year, y = Growth)) +
   ylab("Growth Rate (%)")
 ```
 The graph depicting the year-over-year growth rate in EV registrations presents a dynamic perspective of the market's momentum. Fluctuations in growth rate, marked by peaks and troughs, signify periods of rapid expansion or slowdowns in EV adoption. These variations are indicative of market responses to external stimuli such as new model launches, changes in consumer preferences, or policy shifts. The graph offers insights into the market's responsiveness and periods of heightened interest in EVs, providing a nuanced understanding of the factors driving the EV market's evolution.
+
+## Assosication Bwteen Number of EVs Registered in WA vs Socio-economic Factors
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+
+pce_data <- read.csv('/Users/hujiasheng/SAPCE3_WA_1997_2022.csv')
+gdp_data <- read.csv('/Users/hujiasheng/WA_Data_GDP.csv')
+
+# Preprocessing for PCE data
+pce_filtered <- pce_data %>%
+  slice(1:1) %>%
+  select(7:ncol(pce_data)) %>%
+  select(-2)
+
+pce_long <- pce_filtered %>%
+  pivot_longer(
+    cols = -Description, 
+    names_to = "Year", 
+    values_to = "PCE"
+  ) %>%
+  select(-1)
+
+pce_long$Year <- as.integer(sub("X", "", pce_long$Year))
+
+colnames(ev_count_by_year)[1] ="Year"
+
+merged_data_pce <- merge(ev_count_by_year, pce_long, by = "Year")
+
+# Preprocessing for GDP data
+colnames(gdp_data)[1] ="Year"
+
+gdp_data$Washington.Per.Capita.GDP <- gsub("\\$", "", gdp_data$Washington.Per.Capita.GDP)
+gdp_data$Washington.Per.Capita.GDP <- as.integer(gsub(",", "", gdp_data$Washington.Per.Capita.GDP))
+gdp_data$Washington.Population <- as.integer(gsub(",", "", gdp_data$Washington.Population))
+
+merged_data_gdp <- merge(ev_count_by_year, gdp_data, by = "Year")
+
+
+# Plot 1: Number of EVs Registered vs Personal Consumption Expenditures
+ggplot(merged_data_pce, aes(x = log(PCE), y = log(Count))) +
+  geom_point(color='orange') +
+  geom_smooth(method = 'lm', formula = y ~ x, se = TRUE, color = "skyblue") +
+  theme_minimal() +
+  labs(title = "Number of EVs Registered vs Personal Consumption Expenditures",
+       x = "Log of Personal Consumption Expenditures in Washington State",
+       y = "Log of Number of EVs Registered")
+
+# Plot 2: Number of EVs Registered vs Washington Population
+ggplot(merged_data_gdp, aes(x = log(Washington.Population), y = log(Count))) +
+  geom_point(color = "orange") +
+  geom_smooth(method = 'lm', formula = y ~ x, se = TRUE, color = "skyblue") +
+  theme_minimal() +
+  labs(title = "Number of EVs Registered vs Washington Population",
+       x = "Log of Population in Washington State",
+       y = "Log of Number of EVs Registered")
+
+# Plot 3: Number of EVs Registered vs GDP per capita
+ggplot(merged_data_gdp, aes(x = log(Washington.Per.Capita.GDP), y = log(Count))) +
+  geom_point(color = "orange") +
+  geom_smooth(method = 'lm', formula = y ~ x, se = TRUE, color = "skyblue") +
+  theme_minimal() +
+  labs(title = "Number of EVs Registered vs GDP per capita",
+       x = "Log of GDP per capita in Washington State",
+       y = "Log of Number of EVs Registered")
+```
+The three scatter plots illustrate the logarithmic relationship between the number of electric vehicles (EVs) registered in Washington State and key economic indicators. The first plot suggests a positive correlation between EV registrations and personal consumption expenditures, indicating that as consumer spending increases, so does the adoption of EVs. The second plot shows a less clear relationship with population, suggesting other factors may influence EV adoption rates. Lastly, the third plot hints at a potential positive correlation between EV registrations and GDP per capita, implying that wealthier areas may have higher EV uptake. Together, these graphs provide insights into the economic dimensions that may affect EV adoption.
 
 ## Comparative Analysis of EV Adoption by Type (PHEV vs BEV)
 ```{r}
@@ -53,6 +119,7 @@ ev_type_by_year <- filtered_ev_data %>%
 ggplot(ev_type_by_year, aes(x = Model.Year, y = n, fill = Electric.Vehicle.Type)) +
   geom_bar(stat = "identity", position = "stack") +
   scale_x_continuous(limits = c(2005, 2025)) +
+  scale_fill_manual(values = c("skyblue", "orange")) +  
   theme_minimal() +
   labs(title = "Comparative Analysis of EV Adoption by Type (PHEV vs BEV)",
        x = "Year",
@@ -63,8 +130,8 @@ The graph provides a comparative analysis of adoption rates between Plug-in Hybr
 
 ## Spatial Distribution of EVs in States
 ```{r}
-library(sf)
-library(maps)
+suppressPackageStartupMessages(library(sf))
+suppressPackageStartupMessages(library(maps))
 
 state_map <- map_data("state")
 
@@ -142,75 +209,12 @@ ggplot(county_distribution, aes(x = reorder(County, -n), y = n)) +
 ```
 The bar chart illustrates the top 10 counties in Washington State by electric vehicle (EV) distribution. King County leads by a substantial margin, reflecting a higher rate of EV adoption, likely due to urbanization and infrastructure support. Snohomish and Pierce counties follow, indicating significant EV presence. The chart reveals a stark contrast between King County and the others, suggesting a potential focus area for expanding EV infrastructure and incentives. The distribution pattern underscores the correlation between population density, infrastructure, and EV adoption rates across different regions.
 
-## Assosication Bwteen Number of EVs Registered in WA vs Socio-economic Factors
-```{r}
-suppressPackageStartupMessages(library(tidyverse))
-
-pce_data <- read.csv('/Users/hujiasheng/SAPCE3_WA_1997_2022.csv')
-gdp_data <- read.csv('/Users/hujiasheng/WA_Data_GDP.csv')
-
-# Preprocessing for PCE data
-pce_filtered <- pce_data %>%
-  slice(1:1) %>%
-  select(7:ncol(pce_data)) %>%
-  select(-2)
-
-pce_long <- pce_filtered %>%
-  pivot_longer(
-    cols = -Description, 
-    names_to = "Year", 
-    values_to = "PCE"
-  ) %>%
-  select(-1)
-
-pce_long$Year <- as.integer(sub("X", "", pce_long$Year))
-
-colnames(ev_count_by_year)[1] ="Year"
-
-merged_data_pce <- merge(ev_count_by_year, pce_long, by = "Year")
-
-# Preprocessing for GDP data
-colnames(gdp_data)[1] ="Year"
-
-gdp_data$Washington.Per.Capita.GDP <- gsub("\\$", "", gdp_data$Washington.Per.Capita.GDP)
-gdp_data$Washington.Per.Capita.GDP <- as.integer(gsub(",", "", gdp_data$Washington.Per.Capita.GDP))
-gdp_data$Washington.Population <- as.integer(gsub(",", "", gdp_data$Washington.Population))
-
-merged_data_gdp <- merge(ev_count_by_year, gdp_data, by = "Year")
-
-
-# Plot 1: Number of EVs Registered vs Personal Consumption Expenditures
-ggplot(merged_data_pce, aes(x = log(PCE), y = log(Count))) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "Number of EVs Registered vs Personal Consumption Expenditures",
-       x = "Log of Personal Consumption Expenditures in Washington State",
-       y = "Log of Number of EVs Registered")
-
-# Plot 2: Number of EVs Registered vs Washington Population
-ggplot(merged_data_gdp, aes(x = log(Washington.Population), y = log(Count))) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "Number of EVs Registered vs Washington Population",
-       x = "Log of Population in Washington State",
-       y = "Log of Number of EVs Registered")
-
-# Plot 3: Number of EVs Registered vs GDP per capita
-ggplot(merged_data_gdp, aes(x = log(Washington.Per.Capita.GDP), y = log(Count))) +
-  geom_point() +
-  theme_minimal() +
-  labs(title = "Number of EVs Registered vs GDP per capita",
-       x = "Log of GDP per capita in Washington State",
-       y = "Log of Number of EVs Registered")
-```
-The three scatter plots illustrate the logarithmic relationship between the number of electric vehicles (EVs) registered in Washington State and key economic indicators. The first plot suggests a positive correlation between EV registrations and personal consumption expenditures, indicating that as consumer spending increases, so does the adoption of EVs. The second plot shows a less clear relationship with population, suggesting other factors may influence EV adoption rates. Lastly, the third plot hints at a potential positive correlation between EV registrations and GDP per capita, implying that wealthier areas may have higher EV uptake. Together, these graphs provide insights into the economic dimensions that may affect EV adoption.
-
-## Distribution of EV Makers
+## Distribution of EV Makers in Washington State
 ```{r}
 suppressPackageStartupMessages(library(dplyr))
 library(ggplot2)
 
-ev_data <- read.csv('/Users/gothicowl/Desktop/Electric_Vehicle_Population_Data.csv')
+#ev_data <- read.csv('/Users/gothicowl/Desktop/Electric_Vehicle_Population_Data.csv')
 
 ev_maker_freq <- ev_data %>%
   count(Make) %>%               
@@ -227,7 +231,7 @@ ggplot(ev_maker_freq, aes(x = reorder(Make, n), y = n)) +
 ```
 The bar chart depicts the distribution of electric vehicles (EVs) by maker, highlighting Tesla's significant lead in the market. Other prominent manufacturers like Nissan and Chevrolet also show substantial numbers, pointing towards a competitive but unevenly distributed market landscape. The long tail of the distribution suggests a wide variety of makers with smaller presences, indicating a market that is both diverse in offerings and concentrated in top players. The chart effectively underscores the disparity in EV production among manufacturers and hints at market dominance by a few key players.
 
-## Popularity of Tesla Models
+## Popularity of Tesla Models in Washington State
 ```{r}
 suppressPackageStartupMessages(library(tidyverse))
 tesla_models_freq <- ev_data %>%
@@ -247,7 +251,7 @@ ggplot(tesla_models_freq, aes(x = reorder(Model, n), y = n)) +
 ```
 The bar chart reveals the relative popularity of Tesla models, with the Model Y leading, followed closely by Model 3, suggesting a strong consumer preference for these models. The substantial gap between these and the luxury Model S and X indicates market trends favoring more affordable options. The Roadster's presence, while minimal, hints at niche appeal. The distribution reflects Tesla's market strategy and consumer buying patterns, emphasizing the shift towards more accessible electric vehicles.
 
-## Time Series Analysis of Tesla Model Y Registrations
+## Time Series Analysis of Tesla Model Y Registrations in Washington State
 ```{r}
 model_y_data <- ev_data %>%
   filter(Make == "TESLA", Model == "MODEL Y") %>%
