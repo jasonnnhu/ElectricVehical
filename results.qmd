@@ -206,3 +206,26 @@ ggplot(merged_data_gdp, aes(x = log(Washington.Per.Capita.GDP), y = log(Count)))
 The three scatter plots illustrate the logarithmic relationship between the number of electric vehicles (EVs) registered in Washington State and key economic indicators. The first plot suggests a positive correlation between EV registrations and personal consumption expenditures, indicating that as consumer spending increases, so does the adoption of EVs. The second plot shows a less clear relationship with population, suggesting other factors may influence EV adoption rates. Lastly, the third plot hints at a potential positive correlation between EV registrations and GDP per capita, implying that wealthier areas may have higher EV uptake. Together, these graphs provide insights into the economic dimensions that may affect EV adoption.
 
 
+## Distribution of EV Makers
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+library(ggplot2)
+
+ev_data <- read.csv('/Users/gothicowl/Desktop/Electric_Vehicle_Population_Data.csv')
+
+ev_maker_freq <- ev_data %>%
+  count(Make) %>%               
+  arrange(desc(n))                
+
+ggplot(ev_maker_freq, aes(x = reorder(Make, n), y = n)) +
+  geom_bar(stat = "identity", fill='skyblue') +
+  coord_flip() +  
+  theme_minimal() +
+  labs(title = "Distribution of EV Makers",
+       x = "Number of Vehicles",
+       y = "EV Maker") +
+  theme(axis.text.y = element_text(size=5), axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
