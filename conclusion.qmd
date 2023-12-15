@@ -1,6 +1,6 @@
 # Conclusion
 
-**5.1 Main Takeaways of Your Exploration**
+**5.1 Main Takeaways of Exploration**
 
 The exploration of electric vehicle (EV) registration data in Washington State has revealed several compelling narratives about the EV market and consumer behavior. Notably, Tesla stands out with a dominant market share, and within its product line, the Model Y has emerged as a particularly popular choice. A time series analysis of the data from 2020 to 2023 shows an accelerating trend in Model Y registrations, suggesting that Tesla's strategies are resonating well with consumers. Spatial analysis also uncovered a significant urban concentration of EVs, particularly Tesla models, hinting at a correlation between EV adoption and urban settings. This may reflect the accessibility of charging infrastructure or a higher rate of consumer adoption in metropolitan areas.
 
