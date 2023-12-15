@@ -53,6 +53,7 @@ Cross-Tabulation with Other Variables: By cross-tabulating vehicle types with ot
 ```{r}
 library(ggplot2)
 library(reshape2)
+library(naniar)
 suppressPackageStartupMessages(library(dplyr))
 
 #setwd("~/Desktop")
@@ -66,23 +67,28 @@ missing_values <- sapply(ev_data, function(x) sum(is.na(x)))
 missing_df <- data.frame(Column = names(missing_values), MissingCount = missing_values)
 
 ggplot(missing_df, aes(x = Column, y = MissingCount)) +
-    geom_bar(stat = "identity", fill = "blue") +
+    geom_bar(stat = "identity", fill = "skyblue") +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
     ggtitle("Missing Values in Each Column") +
     xlab("Columns") +
     ylab("Number of Missing Values")
 
-total_rows <- nrow(ev_data)
-missing_percentage <- (missing_values / total_rows) * 100
+#total_rows <- nrow(ev_data)
+#missing_percentage <- (missing_values / total_rows) * 100
 
-missing_percent_df <- data.frame(Column = names(missing_percentage), MissingPercent = missing_percentage)
+#missing_percent_df <- data.frame(Column = names(missing_percentage), MissingPercent = missing_percentage)
 
-ggplot(missing_percent_df, aes(x = Column, y = MissingPercent)) +
-    geom_bar(stat = "identity", fill = "red") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    ggtitle("Percentage of Missing Values in Each Column") +
-    xlab("Columns") +
-    ylab("Percentage of Missing Values (%)")
+#ggplot(missing_percent_df, aes(x = Column, y = MissingPercent)) +
+#    geom_bar(stat = "identity", fill = "red") +
+#    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+#    ggtitle("Percentage of Missing Values in Each Column") +
+#    xlab("Columns") +
+#    ylab("Percentage of Missing Values (%)")
+
+sampled_ev_data <- ev_data %>% 
+  slice_sample(n = 50000)  
+
+vis_miss(sampled_ev_data)
 ```
 The analysis of the Electric Vehicle Population Data reveals insightful patterns regarding missing values, as depicted in the following two graphs
 
