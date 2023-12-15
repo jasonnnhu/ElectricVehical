@@ -5,9 +5,8 @@
 **(1) Data Source:**
 
 1. "Electric Vehicle Population Data" from the U.S. Department of Energy, available on Data.gov. (https://catalog.data.gov/dataset/electric-vehicle-population-data)
-2. "Washington State Population and GDP Per Capita Data" from Bureau of Economic Analysis, U.S. Department of Commerce, available on bea.gov (https://www.bea.gov/)
-3. "Personal Consumption Data in Washington State" from from Bureau of Economic Analysis, U.S. Department of Commerce, available on bea.gov.
-(https://apps.bea.gov/regional/downloadzip.cfm)
+2. "Washington State Population and GDP Per Capita Data" from Bureau of Economic Analysis, U.S. Department of Commerce, available on bea.gov. (https://www.bea.gov/)
+3. "Personal Consumption Data in Washington State" from from Bureau of Economic Analysis, U.S. Department of Commerce, available on bea.gov. (https://apps.bea.gov/regional/downloadzip.cfm)
 
 **(2) Data Descriptions:**
 
@@ -52,10 +51,9 @@ Cross-Tabulation with Other Variables: By cross-tabulating vehicle types with ot
 
 ```{r}
 library(ggplot2)
-library(reshape2)
+suppressPackageStartupMessages(library(reshape2))
 suppressPackageStartupMessages(library(dplyr))
 
-#setwd("~/Desktop")
 ev_data <- read.csv('/Users/hujiasheng/Electric_Vehicle_Population_Data.csv')
 
 missing_values <- sapply(ev_data, function(x) sum(is.na(x)))
