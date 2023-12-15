@@ -9,7 +9,7 @@ This project analyzes electric vehicle (EV) usage trends in Washington State, of
 **Visualization Tools:** Interactive charts and maps highlighting key findings.
 **User-Friendly Interface:** Designed for accessibility and engagement.
 
-##### Usage
+#### Usage
 Follow the instructions in **d3graph.qmd** for interactive visualizations. Analytical results are documented in **results.qmd**.
 
 
