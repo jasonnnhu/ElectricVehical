@@ -106,3 +106,5 @@ svg.selectAll(".bar")
             .duration(500)
             .style("opacity", 0);
     });
+
+
