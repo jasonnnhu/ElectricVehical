@@ -205,9 +205,7 @@ ggplot(merged_data_gdp, aes(x = log(Washington.Per.Capita.GDP), y = log(Count)))
 ```
 The three scatter plots illustrate the logarithmic relationship between the number of electric vehicles (EVs) registered in Washington State and key economic indicators. The first plot suggests a positive correlation between EV registrations and personal consumption expenditures, indicating that as consumer spending increases, so does the adoption of EVs. The second plot shows a less clear relationship with population, suggesting other factors may influence EV adoption rates. Lastly, the third plot hints at a potential positive correlation between EV registrations and GDP per capita, implying that wealthier areas may have higher EV uptake. Together, these graphs provide insights into the economic dimensions that may affect EV adoption.
 
-
 ## Distribution of EV Makers
-
 ```{r}
 suppressPackageStartupMessages(library(dplyr))
 library(ggplot2)
@@ -227,5 +225,74 @@ ggplot(ev_maker_freq, aes(x = reorder(Make, n), y = n)) +
        y = "EV Maker") +
   theme(axis.text.y = element_text(size=5), axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+The bar chart depicts the distribution of electric vehicles (EVs) by maker, highlighting Tesla's significant lead in the market. Other prominent manufacturers like Nissan and Chevrolet also show substantial numbers, pointing towards a competitive but unevenly distributed market landscape. The long tail of the distribution suggests a wide variety of makers with smaller presences, indicating a market that is both diverse in offerings and concentrated in top players. The chart effectively underscores the disparity in EV production among manufacturers and hints at market dominance by a few key players.
 
+## Popularity of Tesla Models
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+tesla_models_freq <- ev_data %>%
+  filter(Make == "TESLA") %>%
+  count(Model) %>%
+  arrange(desc(n))
 
+ggplot(tesla_models_freq, aes(x = reorder(Model, n), y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  coord_flip() +
+  theme_minimal() +
+  labs(title = "Popularity of Tesla Models",
+       x = "Number of Vehicles",
+       y = "Tesla Model") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x labels for better readability
+
+```
+The bar chart reveals the relative popularity of Tesla models, with the Model Y leading, followed closely by Model 3, suggesting a strong consumer preference for these models. The substantial gap between these and the luxury Model S and X indicates market trends favoring more affordable options. The Roadster's presence, while minimal, hints at niche appeal. The distribution reflects Tesla's market strategy and consumer buying patterns, emphasizing the shift towards more accessible electric vehicles.
+
+## Time Series Analysis of Tesla Model Y Registrations
+```{r}
+model_y_data <- ev_data %>%
+  filter(Make == "TESLA", Model == "MODEL Y") %>%
+  group_by(Model.Year) %>%
+  summarise(Count = n())
+
+# Create a time series plot
+ggplot(model_y_data, aes(x = Model.Year, y = Count)) +
+  geom_line(group=1, color='skyblue') + 
+  geom_point(color='orange') +
+  theme_minimal() +
+  labs(title = "Time Series Analysis of Tesla Model Y Registrations",
+       x = "Year",
+       y = "Number of Registrations")
+```
+The time series plot illustrates a significant upward trend in Tesla Model Y registrations from 2020 to 2023. The steep incline indicates a rapid growth in popularity, reflecting strong market acceptance and possibly the impact of Tesla's expanding production capacity and marketing efforts. The consistent year-over-year increase suggests the Model Y is becoming a dominant player in the EV market, likely due to its blend of affordability, features, and brand appeal. This growth trajectory underscores the Model Y's significance in Tesla's lineup and its role in the broader shift towards electric mobility.
+
+## Spatial Distribution of Tesla Model Y in Washington State
+```{r}
+suppressPackageStartupMessages(library(sf))
+library(maps)
+
+ev_data_WA_model_y <- ev_data %>%
+  filter(Model == "MODEL Y") %>%
+  mutate(
+    Longitude = as.numeric(sub(".*\\(([^ ]+).*", "\\1", `Vehicle.Location`)),
+    Latitude = as.numeric(sub(".* ([^ ]+)\\).*", "\\1", `Vehicle.Location`)),
+    Year = as.factor(Model.Year)
+  ) %>%
+  filter(!is.na(Longitude) & !is.na(Latitude)) %>%
+  filter(between(Longitude, -124.848974, -116.916031) & 
+         between(Latitude, 45.543541, 49.002494))
+
+coordinates_model_y <- st_as_sf(ev_data_WA_model_y, coords = c("Longitude", "Latitude"), crs = 4326)
+
+washington_map <- map_data("state", region = "washington")
+
+ggplot() +
+  geom_polygon(data = washington_map, aes(x = long, y = lat, group = group), fill = "white", color = "black") +
+  geom_sf(data = coordinates_model_y, aes(color = Year), size = 1, alpha = 0.5) +  # Color by Year
+  scale_color_brewer(palette = "Set3") +
+  theme_minimal() +
+  labs(title = "Spatial Distribution of Tesla Model Y in Washington State by Year",
+       x = "Longitude",
+       y = "Latitude") +
+  theme(legend.position = "right")
+```
+Comparing the spatial distribution of all EVs in WA, the spatial distribution of Tesla Model Y in Washington State reveals a similar geographical trend, with dense clustering around urban centers. The Model Y exhibits a focused concentration in specific areas, suggesting a strong market presence in affluent or tech-savvy communities. While both distributions are widespread, reflecting general EV adoption, the Model Y's distribution may indicate targeted consumer demographics and the success of Tesla's marketing strategies within those segments.
